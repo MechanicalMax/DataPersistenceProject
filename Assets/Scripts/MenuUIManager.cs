@@ -12,7 +12,11 @@ public class MenuUIManager : MonoBehaviour
     {
         SceneManager.LoadScene(1);
     }
-
+    public void NameEntered(string name)
+    {
+        PersistentData.Instance.PlayerName = name;
+        PersistentData.Instance.UpdateSceneBestDisplay();
+    }
     public void Exit()
     {
         PersistentData.Instance.SaveBest();

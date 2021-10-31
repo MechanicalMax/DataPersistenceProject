@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System.IO;
 
 public class PersistentData : MonoBehaviour
@@ -20,6 +21,9 @@ public class PersistentData : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        LoadBest();
+        UpdateSceneBestDisplay();
     }
 
     [System.Serializable]
@@ -48,8 +52,17 @@ public class PersistentData : MonoBehaviour
             string json = File.ReadAllText(path);
             SaveData data = JsonUtility.FromJson<SaveData>(json);
 
-            data.BestName = BestName;
-            data.BestScore = BestScore;
+            BestName = data.BestName;
+            BestScore = data.BestScore;
+        }
+    }
+
+    public void UpdateSceneBestDisplay()
+    {
+        if (BestName != "" && BestScore > 0)
+        {
+            Text display = GameObject.Find("Canvas/BestDisplay").GetComponent<Text>();
+            display.text = "Best: " + BestName +" => " + BestScore;
         }
     }
 

@@ -35,6 +35,8 @@ public class MainManager : MonoBehaviour
                 brick.onDestroyed.AddListener(AddPoint);
             }
         }
+
+        PersistentData.Instance.UpdateSceneBestDisplay();
     }
 
     private void Update()
@@ -64,12 +66,19 @@ public class MainManager : MonoBehaviour
     void AddPoint(int point)
     {
         m_Points += point;
-        ScoreText.text = $"Score : {m_Points}";
+        ScoreText.text = $"Score : {PersistentData.Instance.PlayerName} => {m_Points}";
     }
 
     public void GameOver()
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+        if(m_Points>=PersistentData.Instance.BestScore)
+        {
+            PersistentData.Instance.BestScore = m_Points;
+            PersistentData.Instance.BestName = PersistentData.Instance.PlayerName;
+            PersistentData.Instance.UpdateSceneBestDisplay();
+        }
+        PersistentData.Instance.SaveBest();
     }
 }
